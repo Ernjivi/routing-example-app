@@ -1,22 +1,29 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from "../../../environments/environment";
+import { Observable } from 'rxjs/Observable';
 
-const USERS: any[] = [
-  { id: 1, firstName: 'Ernesto', lastName: 'Jiménez Villaseñor' },
-  { id: 2, firstName: 'Salvador', lastName: 'Mora Hubert' },
-  { id: 3, firstName: 'Andres', lastName: 'Fleiz Jaso' },
-]
+
+interface User{
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+}
 
 @Injectable()
 export class UserService {
 
-  constructor() { }
+  private apiURL: string = `${environment.apiUrl}users`;
 
-  getUsers(): any[]{
-    return USERS
+  constructor(private http: HttpClient) { }
+
+  getUsers(): Observable<User[]>{
+    return this.http.get<User[]>(this.apiURL);
   }
 
-  getUser(id: number){
-    return USERS.find(user => user.id === id);
+  getUser(id: number): Observable<User>{
+    return this.http.get<User>(`${this.apiURL}/${id}`);
   }
 
 }

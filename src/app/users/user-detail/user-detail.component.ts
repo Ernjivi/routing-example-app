@@ -19,7 +19,8 @@ export class UserDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.user = this.userService.getUser(Number(params['id']));
+      this.userService.getUser(Number(params['id']))
+        .subscribe(user => this.user = user);
     });
   }
 
